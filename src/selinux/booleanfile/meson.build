@@ -23,3 +23,7 @@ cil_files = [
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
+
+if systemd
+    policy_sources += files('systemdvolatileoverlaybooleanfile.cil')
+endif

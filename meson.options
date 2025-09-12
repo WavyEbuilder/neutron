@@ -29,3 +29,10 @@ option(
     value: 34,
     description: 'Policy version',
 )
+
+option(
+    'systemd',
+    type: 'boolean',
+    value: true,
+    description: 'Enable systemd support',
+)

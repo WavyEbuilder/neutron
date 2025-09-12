@@ -19,6 +19,7 @@ project('neutron', meson_version: '>= 1.3.0', version: '0.1')
 polvers = get_option('polvers')
 selinuxtype = meson.project_name()
 mcs = get_option('mcs')
+systemd = get_option('systemd')
 
 policy_sources = []
 
