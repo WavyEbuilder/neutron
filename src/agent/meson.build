@@ -15,30 +15,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'agent.cil',
-    'anoninode.cil',
-    'dev.cil',
-    'file.cil',
-    'fs.cil',
-    'invalid.cil',
-    'misc.cil',
-    'net.cil',
-    'selinux.cil',
-    'subj.cil',
-    'sys.cil',
-    'unlabeled.cil',
+    'hybridagent.cil',
+    'sysagent.cil',
+    'useragent.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('agent')
-subdir('anoninode')
-subdir('dev')
-subdir('file')
-subdir('fs')
-subdir('misc')
-subdir('net')
-subdir('selinux')
-subdir('sys')

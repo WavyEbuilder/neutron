@@ -1,0 +1,63 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;; For agents that operate in both a system and user context
+
+(block hybrid
+
+  (call .sys.agent.exec.type (agent.exec.typeattr))
+  (call .sys.agent.type (agent.typeattr))
+
+  (block agent
+
+    (macro type ((type ARG1))
+           (typeattributeset typeattr ARG1))
+
+    (blockinherit .subj.all_macro_template)
+
+    (typeattribute typeattr)
+
+    ;; traversal of cwd
+    (dontaudit typeattr self (capability (dac_override dac_read_search)))
+
+    (block exec
+
+      (macro entrypoint_all_files ((type ARG1))
+             (allow ARG1 typeattr (file (entrypoint))))
+
+      (macro getattr_all_files ((type ARG1))
+             (allow ARG1 typeattr (file (getattr))))
+
+      (macro map_all_files ((type ARG1))
+             (allow ARG1 typeattr (file (map))))
+
+      (macro type ((type ARG1))
+             (typeattributeset typeattr ARG1))
+
+      (blockinherit .file.all_macro_template_files)
+
+      (typeattribute typeattr))
+
+    (block template
+
+      (blockabstract template)
+
+      (blockinherit .user.agent.template)
+
+      (call subj_type_transition (.sys.subj))
+
+      (call .hybrid.agent.exec.type (exec.file))
+      (call .hybrid.agent.type (subj)))))
