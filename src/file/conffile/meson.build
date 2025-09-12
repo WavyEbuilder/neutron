@@ -15,35 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'authfile.cil',
-    'bootfile.cil',
-    'bootflagfile.cil',
-    'certfile.cil',
-    'conffile.cil',
-    'datafile.cil',
-    'devfile.cil',
-    'homefile.cil',
-    'hugetlbfsfile.cil',
-    'mqueuefsfile.cil',
-    'runfile.cil',
-    'secfile.cil',
-    'tmpfile.cil',
-    'tmpfsfile.cil',
-    'varfile.cil',
+    'skelconffile.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('authfile')
-subdir('conffile')
-subdir('datafile')
-subdir('homefile')
-subdir('hugetlbfsfile')
-subdir('misc')
-subdir('mqueuefsfile')
-subdir('runfile')
-subdir('tmpfile')
-subdir('tmpfsfile')
-subdir('varfile')
