@@ -1,0 +1,53 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(block passwd
+
+  (filecon "/etc/group[-\+\~]?" file file_context)
+  (filecon "/etc/passwd[-\+\~]?" file file_context)
+  (filecon "/etc/subgid[-\+\~]?" file file_context)
+  (filecon "/etc/subuid[-\+\~]?" file file_context)
+
+  (macro conf_file_type_transition_file ((type ARG1)(name ARG2))
+         (call .conf.file_type_transition
+               (ARG1 file file ARG2)))
+
+  (macro map_file_files ((type ARG1))
+         (allow ARG1 file (file (map))))
+
+  (blockinherit .file.base_template)
+  (blockinherit .file.macro_template_files)
+
+  (call .xattr.associate_fs_pattern.type (file)))
+
+(in file.unconfined
+
+    (call .passwd.conf_file_type_transition_file (typeattr "group"))
+    (call .passwd.conf_file_type_transition_file (typeattr "group-"))
+    (call .passwd.conf_file_type_transition_file (typeattr "group+"))
+    (call .passwd.conf_file_type_transition_file (typeattr "group~"))
+    (call .passwd.conf_file_type_transition_file (typeattr "passwd"))
+    (call .passwd.conf_file_type_transition_file (typeattr "passwd-"))
+    (call .passwd.conf_file_type_transition_file (typeattr "passwd+"))
+    (call .passwd.conf_file_type_transition_file (typeattr "passwd~"))
+    (call .passwd.conf_file_type_transition_file (typeattr "subgid"))
+    (call .passwd.conf_file_type_transition_file (typeattr "subgid-"))
+    (call .passwd.conf_file_type_transition_file (typeattr "subgid+"))
+    (call .passwd.conf_file_type_transition_file (typeattr "subgid~"))
+    (call .passwd.conf_file_type_transition_file (typeattr "subuid"))
+    (call .passwd.conf_file_type_transition_file (typeattr "subuid-"))
+    (call .passwd.conf_file_type_transition_file (typeattr "subuid~"))
+    (call .passwd.conf_file_type_transition_file (typeattr "subuid+")))
