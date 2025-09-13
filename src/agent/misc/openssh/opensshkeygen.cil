@@ -1,0 +1,65 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(in openssh
+
+    (block keygen
+
+      (blockinherit .hybrid.agent.template)
+
+      (allow subj self (process (setfscreate)))
+
+      (call .cert.read_file_files (subj))
+      (call .cert.search_file_pattern.type (subj))
+
+      (call .checkcontext_selinux_security (subj))
+
+      (call .crypto.read_sysctlfile_pattern.type (subj))
+
+      (call .locale.data.map_file_pattern.type (subj))
+      (call .locale.read_file_pattern.type (subj))
+
+      (call .nss.passwdgroup.type (subj))
+
+      (call .selinux.file.read_file_pattern.type (subj))
+      (call .selinux.readwrite_fs_pattern.type (subj))
+
+      (optional opensshkeygen_certhomefile
+                (call .cert.home.read_file_files (subj))
+                (call .cert.home.search_file_dirs (subj)))
+
+      (optional opensshkeygen_gnupgagent
+                (call .gnupg.agent.unix_stream_connect (subj)))
+
+      (optional opensshkeygen_opensshclient
+                (call openssh.agent.unix_stream_connect (subj))
+                (call openssh.home.manage_file_dirs (subj))
+                (call openssh.home.manage_file_files (subj))
+                (call openssh.home.user_home_file_type_transition_file (subj)))
+
+      (optional opensshkeygen_p11kit
+                (call .p11kit.data.map_file_files (subj))
+                (call .p11kit.read_file_pattern.type (subj)))
+
+      (optional opensshkeygen_userhomefile
+                (call .user.home.manage_file_files (subj)))
+
+      (optional opensshkeygen_userrunfile
+                (call .user.run.search_file_pattern.type (subj)))))
+
+(in after openssh.keygen.exec
+
+    (filecon "/usr/bin/ssh-keygen" file file_context))

@@ -15,13 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'ephemeralportnet.cil',
-    'reservedportnet.cil',
-    'unreservedportnet.cil',
+    'sshreservedport.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('reservedportnet')

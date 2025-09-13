@@ -17,6 +17,7 @@
 cil_files = [
     'dbus.cil',
     'nss.cil',
+    'openssh.cil',
     'pam.cil',
 ]
 
@@ -24,4 +25,5 @@ foreach file : cil_files
     policy_sources += files(file)
 endforeach
 
+subdir('openssh')
 subdir('pam')
