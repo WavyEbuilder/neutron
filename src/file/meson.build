@@ -29,6 +29,7 @@ cil_files = [
     'secfile.cil',
     'tmpfile.cil',
     'tmpfsfile.cil',
+    'userfile.cil',
     'varfile.cil',
 ]
 
