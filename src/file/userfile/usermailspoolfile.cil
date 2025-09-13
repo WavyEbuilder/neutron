@@ -1,0 +1,45 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(in file.unconfined
+
+    (call .user.mail.spool.mail_spool_file_type_transition_file
+          (typeattr "root")))
+
+(in user
+
+    (block mail
+
+      (block spool
+
+        (filecon "/var/spool/mail/%{USERNAME}" file file_context)
+        (filecon "/var/spool/mail/%{USERNAME}\..*" file file_context)
+
+        (macro dontaudit_getattr_file_files ((type ARG1))
+               (dontaudit ARG1 file (file (getattr))))
+
+        (macro getattr_file_files ((type ARG1))
+               (allow ARG1 file (file (getattr))))
+
+        (macro map_file_files ((type ARG1))
+               (allow ARG1 file (file (map))))
+
+        (macro mail_spool_file_type_transition_file ((type ARG1)(name ARG2))
+               (call .mail.spool.file_type_transition
+                     (ARG1 file file ARG2)))
+
+        (blockinherit .file.macro_template_files)
+        (blockinherit .file.spool.mail.base_template))))
