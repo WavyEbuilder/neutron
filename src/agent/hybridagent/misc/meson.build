@@ -15,14 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'hybridagent.cil',
-    'sysagent.cil',
-    'useragent.cil',
+    'passwd.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('hybridagent')
-subdir('misc')
