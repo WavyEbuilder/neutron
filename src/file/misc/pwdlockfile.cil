@@ -1,0 +1,47 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(block pwdlock
+
+  (filecon "/etc/\.pwd\.lock" file file_context)
+
+  (filecon "/etc/group\..*" file file_context)
+  (filecon "/etc/gshadow\..*" file file_context)
+  (filecon "/etc/nshadow\..*" file file_context)
+  (filecon "/etc/passwd\..*" file file_context)
+  (filecon "/etc/shadow\..*" file file_context)
+  (filecon "/etc/subgid\..*" file file_context)
+  (filecon "/etc/subuid\..*" file file_context)
+
+  (macro conf_file_type_transition_file ((type ARG1)(name ARG2))
+         (call .conf.file_type_transition
+               (ARG1 file file ARG2)))
+
+  (blockinherit .file.base_template)
+  (blockinherit .file.macro_template_files)
+
+  (call .xattr.associate_fs_pattern.type (file)))
+
+(in file.unconfined
+
+    (call .pwdlock.conf_file_type_transition_file (typeattr ".pwd.lock"))
+    (call .pwdlock.conf_file_type_transition_file (typeattr "group.lock"))
+    (call .pwdlock.conf_file_type_transition_file (typeattr "gshadow.lock"))
+    (call .pwdlock.conf_file_type_transition_file (typeattr "nshadow.lock"))
+    (call .pwdlock.conf_file_type_transition_file (typeattr "passwd.lock"))
+    (call .pwdlock.conf_file_type_transition_file (typeattr "shadow.lock"))
+    (call .pwdlock.conf_file_type_transition_file (typeattr "subgid.lock"))
+    (call .pwdlock.conf_file_type_transition_file (typeattr "subuid.lock")))

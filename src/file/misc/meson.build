@@ -19,6 +19,7 @@ cil_files = [
     'mediafile.cil',
     'nologinfile.cil',
     'passwdfile.cil',
+    'pwdlockfile.cil',
     'rootfile.cil',
     'shellrcfile.cil',
     'unknownfile.cil',
