@@ -15,19 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'editordatafile.cil',
-    'execfile.cil',
-    'firmwaredatafile.cil',
-    'firmwarefile.cil',
-    'libfile.cil',
-    'localedatafile.cil',
-    'mimedatafile.cil',
-    'modfile.cil',
-    'srcfile.cil',
+    'shellexecfile.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('execfile')
