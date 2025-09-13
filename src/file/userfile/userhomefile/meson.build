@@ -15,16 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'userhomefile.cil',
-    'userhugetlbfsfile.cil',
-    'usermailspoolfile.cil',
-    'usermqueuefsfile.cil',
-    'usertmpfile.cil',
-    'usertmpfsfile.cil',
+    'inputrchomefile.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('userhomefile')
