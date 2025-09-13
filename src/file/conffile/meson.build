@@ -22,6 +22,7 @@ cil_files = [
     'logindefsconffile.cil',
     'mimeconffile.cil',
     'skelconffile.cil',
+    'terminfoconffile.cil',
 ]
 
 foreach file : cil_files

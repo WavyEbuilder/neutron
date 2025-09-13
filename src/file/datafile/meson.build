@@ -24,6 +24,7 @@ cil_files = [
     'mimedatafile.cil',
     'modfile.cil',
     'srcfile.cil',
+    'terminfodatafile.cil',
 ]
 
 foreach file : cil_files
