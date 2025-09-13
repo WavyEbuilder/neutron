@@ -1,0 +1,48 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(in file.unconfined
+
+    (call .utmp.log.log_file_type_transition_file (typeattr)))
+
+(in utmp
+
+    (block log
+
+      (filecon "/var/log/btmp" file file_context)
+      (filecon "/var/log/btmp\..*" file file_context)
+
+      (filecon "/var/log/lastlog" file file_context)
+      (filecon "/var/log/lastlog\..*" file file_context)
+
+      (filecon "/var/log/wtmp" file file_context)
+      (filecon "/var/log/wtmp\..*" file file_context)
+
+      (macro dontaudit_writeinherited_file_files ((type ARG1))
+             (dontaudit ARG1 file writeinherited_file))
+
+      (macro log_file_type_transition_file ((type ARG1))
+             (call .log.file_type_transition
+                   (ARG1 file file "btmp"))
+             (call .log.file_type_transition
+                   (ARG1 file file "lastlog"))
+             (call .log.file_type_transition
+                   (ARG1 file file "wtmp")))
+
+      (blockinherit .file.log.base_template)
+      (blockinherit .file.macro_template_files)
+
+      (call .rbacsep.exempt.obj.type (file))))
