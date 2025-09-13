@@ -14,35 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-mcs_enabled = mcs ? 'true' : 'false'
-
-cil_conf_data = configuration_data()
-cil_conf_data.set('MCS_ENABLED', mcs_enabled)
-
-conf_cil = configure_file(
-    input: 'conf.cil.in',
-    output: 'conf.cil',
-    configuration: cil_conf_data
-)
-
-policy_sources += conf_cil
-
 cil_files = [
-    'av.cil',
-    'default.cil',
-    'isid.cil',
-    'map.cil',
-    'mls.cil',
-    'obj.cil',
-    'perm.cil',
-    'silenced.cil',
-    'unconfined.cil',
+    'sysuser.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('av')
-subdir('constrain')
-subdir('xperm')

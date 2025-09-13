@@ -1,0 +1,73 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(selinuxuserdefault sys.id sys.lowlow)
+(userprefix sys.id sys.role)
+
+(in sys
+
+    (call user.role (role))
+
+    (block user
+
+      (macro dontaudit_getattr_subj_processes ((type ARG1))
+             (dontaudit ARG1 subj (process (getattr))))
+
+      (macro dyntransition_subj_processes ((type ARG1))
+             (allow ARG1 subj (process (dyntransition))))
+
+      (macro role ((role ARG1))
+             (roleattributeset roleattr ARG1))
+
+      (macro unix_dgram_send ((type ARG1))
+             (call sendto_subj_unix_dgram_sockets (ARG1))
+             (call sys.tmp.write_file_sock_files (ARG1)))
+
+      (roleattribute roleattr)
+      (roletype roleattr subj)
+
+      (blockinherit .subj.base_template)
+      (blockinherit .user.macro_template)
+
+      (call sys.hugetlbfs.hugetlb_fs_type_transition_file (subj "*"))
+
+      (call sys.mqueuefs.mqueue_fs_type_transition_file (subj "*"))
+
+      (call sys.tmp.tmp_file_type_transition_file (subj dir "*"))
+      (call sys.tmp.tmp_file_type_transition_file (subj fifo_file "*"))
+      (call sys.tmp.tmp_file_type_transition_file (subj file "*"))
+      (call sys.tmp.tmp_file_type_transition_file (subj lnk_file "*"))
+      (call sys.tmp.tmp_file_type_transition_file (subj sock_file "*"))
+
+      (call sys.tmpfs.tmp_fs_type_transition_file (subj dir "*"))
+      (call sys.tmpfs.tmp_fs_type_transition_file (subj fifo_file "*"))
+      (call sys.tmpfs.tmp_fs_type_transition_file (subj file "*"))
+      (call sys.tmpfs.tmp_fs_type_transition_file (subj lnk_file "*"))
+      (call sys.tmpfs.tmp_fs_type_transition_file (subj sock_file "*"))
+
+      (call .rbac.subjchangetarget.type (subj))
+
+      (call .rbacsep.exempttarget.type (subj))
+      (call .rbacsep.usefdtarget.type (subj))
+
+      (call .unconfined.type (subj))
+
+      (call .user.type (subj))))
+
+(in sys.agent
+
+    (call sys.user.readwriteinherited_subj_fifo_files (typeattr))
+    (call sys.user.use_subj_fds (typeattr)))

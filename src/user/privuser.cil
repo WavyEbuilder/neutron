@@ -1,0 +1,103 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(in sys
+
+    ;; allows sys.id:sys.role access to all priv roles by default
+    (call .user.priv.roleallow.role (role))
+    (call .user.priv.userrole.user (id)))
+
+(in user
+
+    (block priv
+
+      (macro role ((role ARG1))
+             (roleattributeset roleattr ARG1))
+
+      (macro type ((type ARG1))
+             (typeattributeset typeattr ARG1))
+
+      (roleattribute roleattr)
+      (typeattribute typeattr)
+
+      (blockinherit all_macro_template)
+
+      (call .cert.read_file_files (typeattr))
+      (call .cert.traverse_file_pattern.type (typeattr))
+
+      (call .obj.role (roleattr))
+
+      (call .rbac.subjchangetarget.type (typeattr))
+
+      (call .rbacsep.exempt.role (roleattr))
+      (call .rbacsep.usefdsource.type (typeattr))
+
+      (call .sys.user.readwriteinherited_subj_fifo_files (typeattr))
+      (call .sys.user.use_subj_fds (typeattr))
+
+      (call .user.readwriteinherited_subj_fifo_files (typeattr))
+      (call .user.use_subj_fds (typeattr))
+
+      (call .user.home.readwriteinherited_file_files (typeattr))
+      (call .user.tmp.readwriteinherited_file_files (typeattr))
+      (call .user.mail.spool.dontaudit_getattr_file_files (typeattr))
+
+      (block role_template
+
+        (blockabstract role_template)
+
+        (macro role_access ((role ARG1)(user ARG2))
+               (call roleallow.role (ARG1))
+               (call userrole.user (ARG2)))
+
+        (blockinherit .user.role_template)
+
+        (call .user.priv.role (role)))
+
+      (block roleallow
+
+        (macro role ((role ARG1))
+               (roleattributeset roleattr ARG1))
+
+        (roleattribute roleattr)
+
+        (roleallow roleattr priv.roleattr))
+
+      (block subj_template
+
+        (blockabstract subj_template)
+
+        (blockinherit .user.subj_template)
+
+        (call .user.priv.type (subj)))
+
+      (block template
+
+        (blockabstract template)
+
+        (blockinherit .user.priv.role_template)
+        (blockinherit .user.priv.subj_template)
+
+        (call role (role)))
+
+      (block userrole
+
+        (macro user ((user ARG1))
+               (userattributeset userattr ARG1))
+
+        (userattribute userattr)
+
+        (userrole userattr priv.roleattr))))
