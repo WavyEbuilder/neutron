@@ -1,0 +1,50 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(class passwd (chfn chsh crontab passwd rootok))
+(classorder (unordered passwd))
+
+(in invalid.silenced
+
+    (dontaudit typeattr .invalid (passwd (all))))
+
+(in invalid.unconfined
+
+    (allow typeattr .invalid (passwd (all))))
+
+(in mcs
+
+    (mlsconstrain (passwd (chfn chsh crontab passwd rootok))
+                  (or (dom h1 h2)
+                      (neq t1 constrained.typeattr))))
+
+(in rbacsep
+
+    (constrain (passwd (chfn chsh crontab passwd rootok))
+               (or (or (or (eq r1 r2)
+                           (and (eq r1 exempt.roleattr)
+                                (neq t1 constrained.typeattr)))
+                       (eq t1 exempt.subj.typeattr))
+                   (and (eq t1 exemptsource.typeattr)
+                        (eq t2 exempttarget.typeattr)))))
+
+(in subj.silenced
+
+    (dontaudit typeattr subj.typeattr (passwd (all))))
+
+(in subj.unconfined
+
+    (allow typeattr subj.typeattr (passwd (all))))

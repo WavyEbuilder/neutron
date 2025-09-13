@@ -25,6 +25,7 @@ cil_files = [
     'keyav.cil',
     'memprotectav.cil',
     'msgav.cil',
+    'passwdav.cil',
     'perfeventav.cil',
     'socketav.cil',
     'systemav.cil',
