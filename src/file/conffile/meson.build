@@ -21,6 +21,7 @@ cil_files = [
     'localeconffile.cil',
     'logindefsconffile.cil',
     'mimeconffile.cil',
+    'protocolsconffile.cil',
     'resolvconffile.cil',
     'selinuxconffile.cil',
     'skelconffile.cil',
