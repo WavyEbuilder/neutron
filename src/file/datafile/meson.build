@@ -21,6 +21,7 @@ cil_files = [
     'firmwarefile.cil',
     'libfile.cil',
     'localedatafile.cil',
+    'mimedatafile.cil',
     'modfile.cil',
     'srcfile.cil',
 ]

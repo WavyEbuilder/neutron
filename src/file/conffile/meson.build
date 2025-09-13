@@ -20,6 +20,7 @@ cil_files = [
     'inputrcconffile.cil',
     'localeconffile.cil',
     'logindefsconffile.cil',
+    'mimeconffile.cil',
     'skelconffile.cil',
 ]
 
