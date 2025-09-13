@@ -15,16 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'cachefile.cil',
-    'dbfile.cil',
-    'logfile.cil',
-    'spoolfile.cil',
-    'statefile.cil',
+    'editorstatefile.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('spoolfile')
-subdir('statefile')

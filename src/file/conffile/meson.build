@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
+    'editorconffile.cil',
     'hostsconffile.cil',
     'logindefsconffile.cil',
     'skelconffile.cil',

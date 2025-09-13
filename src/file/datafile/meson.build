@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
+    'editordatafile.cil',
     'execfile.cil',
     'firmwaredatafile.cil',
     'firmwarefile.cil',

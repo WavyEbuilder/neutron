@@ -1,0 +1,46 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(in editor
+
+    (block state
+
+      (filecon "/var/lib/vim" dir file_context)
+      (filecon "/var/lib/vim/.*" any file_context)
+
+      (macro state_file_type_transition_file ((type ARG1))
+             (call .state.file_type_transition
+                   (ARG1 file dir "vim")))
+
+      (blockinherit .file.macro_template_dirs)
+      (blockinherit .file.macro_template_files)
+      (blockinherit .file.state.base_template)
+
+      (block read_file_pattern
+
+        (macro type ((type ARG1))
+               (typeattributeset typeattr ARG1))
+
+        (typeattribute typeattr)
+
+        (call list_file_dirs (typeattr))
+        (call read_file_files (typeattr))
+
+        (call .state.search_file_pattern.type (typeattr)))))
+
+(in file.unconfined
+
+    (call .editor.state.state_file_type_transition_file (typeattr)))
