@@ -16,6 +16,7 @@
 
 cil_files = [
     'editorconffile.cil',
+    'environconffile.cil',
     'hostsconffile.cil',
     'inputrcconffile.cil',
     'localeconffile.cil',

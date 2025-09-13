@@ -16,6 +16,7 @@
 
 cil_files = [
     'editordatafile.cil',
+    'environdatafile.cil',
     'execfile.cil',
     'firmwaredatafile.cil',
     'firmwarefile.cil',

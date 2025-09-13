@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
+    'environrunfile.cil',
     'runlockfile.cil',
     'runuserfile.cil',
     'utmprunfile.cil',
