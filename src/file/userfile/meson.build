@@ -16,6 +16,7 @@
 
 cil_files = [
     'userhomefile.cil',
+    'usermqueuefsfile.cil',
     'usertmpfile.cil',
     'usertmpfsfile.cil',
 ]
