@@ -15,17 +15,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'ptytermdev.cil',
-    'serialtermdev.cil',
-    'systermdev.cil',
-    'usertermdev.cil',
+    'sysloginptytermdev.cil',
+    'sysserialtermdev.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('ptytermdev')
-subdir('serialtermdev')
-subdir('systermdev')
-subdir('usertermdev')

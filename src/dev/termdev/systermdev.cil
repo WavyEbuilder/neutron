@@ -1,0 +1,52 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(in sys
+
+    (block termdev
+
+      (macro getattr_all_chr_files ((type ARG1))
+             (allow ARG1 typeattr (chr_file (getattr))))
+
+      (macro open_all_chr_files ((type ARG1))
+             (allow ARG1 typeattr (chr_file (open))))
+
+      (macro setattr_all_chr_files ((type ARG1))
+             (allow ARG1 typeattr (chr_file (setattr))))
+
+      (macro type ((type ARG1))
+             (typeattributeset typeattr ARG1))
+
+      (typeattribute typeattr)
+
+      (blockinherit .file.all_macro_template_chr_files)
+
+      (call .rbacsep.exempt.obj.type (typeattr))))
+
+(in after sys.termdev.appendinherited_all_chr_files
+    (allowx ARG1 typeattr IOCTLCONSOLE_NOT_TIOCLINUX)
+    (allowx ARG1 typeattr IOCTLTTY_NOT_TIOCSTI)
+    (allowx ARG1 typeattr IOCTLVT))
+
+(in after sys.termdev.readwriteinherited_all_chr_files
+    (allowx ARG1 typeattr IOCTLCONSOLE_NOT_TIOCLINUX)
+    (allowx ARG1 typeattr IOCTLTTY_NOT_TIOCSTI)
+    (allowx ARG1 typeattr IOCTLVT))
+
+(in after sys.termdev.writeinherited_all_chr_files
+    (allowx ARG1 typeattr IOCTLCONSOLE_NOT_TIOCLINUX)
+    (allowx ARG1 typeattr IOCTLTTY_NOT_TIOCSTI)
+    (allowx ARG1 typeattr IOCTLVT))

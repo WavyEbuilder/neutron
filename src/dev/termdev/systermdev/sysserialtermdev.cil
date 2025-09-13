@@ -1,0 +1,35 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(in serialtermdev.unconfined
+
+    (call .sys.loginserialtermdev_all_type_change_serialtermdev (typeattr)))
+
+(in sys
+
+    (macro loginserialtermdev_all_type_change_serialtermdev ((type ARG1))
+           (call .loginserialtermdev.all_type_change
+                 (ARG1 serialtermdev)))
+
+    (macro open_serialtermdev_chr_files ((type ARG1))
+           (allow ARG1 serialtermdev (chr_file (open))))
+
+    (macro setattr_serialtermdev_chr_files ((type ARG1))
+           (allow ARG1 serialtermdev (chr_file (setattr))))
+
+    (blockinherit .serialtermdev.template)
+
+    (call termdev.type (serialtermdev)))
