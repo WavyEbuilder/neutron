@@ -1,0 +1,95 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;; For use in user namespace with for example bubblewrap.
+
+(in file.user
+
+    (block hugetlbfs
+
+      (macro map_all_files ((type ARG1))
+             (allow ARG1 typeattr (file (map))))
+
+      (macro type ((type ARG1))
+             (typeattributeset typeattr ARG1))
+
+      (blockinherit .file.all_macro_template_files)
+
+      (typeattribute typeattr)
+
+      (call .file.hugetlbfs.type (typeattr))
+      (call .file.user.type (typeattr))
+
+      (block base_template
+
+        (blockabstract base_template)
+
+        (blockinherit .file.user.base_template)
+
+        (call .file.user.hugetlbfs.type (file)))
+
+      (block template
+
+        (blockabstract template)
+
+        (blockinherit .file.macro_template_files)
+        (blockinherit .file.user.hugetlbfs.base_template))))
+
+(in user
+
+    (block hugetlbfs
+
+      (macro map_file_files ((type ARG1))
+             (allow ARG1 file (file (map))))
+
+      (macro hugetlb_fs_type_transition_file ((type ARG1)(name ARG2))
+             (call .hugetlb.fs_type_transition
+                   (ARG1 file file ARG2)))
+
+      (blockinherit .file.user.hugetlbfs.template)
+
+      (block manage_file_pattern
+
+        (macro type ((type ARG1))
+               (typeattributeset typeattr ARG1))
+
+        (typeattribute typeattr)
+
+        (call manage_file_files (typeattr))
+
+        (call .hugetlb.search_fs_pattern.type (typeattr)))
+
+      (block read_file_pattern
+
+        (macro type ((type ARG1))
+               (typeattributeset typeattr ARG1))
+
+        (typeattribute typeattr)
+
+        (call read_file_files (typeattr))
+
+        (call .hugetlb.search_fs_pattern.type (typeattr)))
+
+      (block relabel_file_pattern
+
+        (macro type ((type ARG1))
+               (typeattributeset typeattr ARG1))
+
+        (typeattribute typeattr)
+
+        (call relabel_file_files (typeattr))
+
+        (call .hugetlb.search_fs_pattern.type (typeattr)))))
