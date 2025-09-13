@@ -17,6 +17,7 @@
 cil_files = [
     'editorconffile.cil',
     'hostsconffile.cil',
+    'inputrcconffile.cil',
     'logindefsconffile.cil',
     'skelconffile.cil',
 ]
