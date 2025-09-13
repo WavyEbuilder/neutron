@@ -15,25 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'blocksysfile.cil',
-    'bussysfile.cil',
-    'classsysfile.cil',
-    'devicessysfile.cil',
-    'devsysfile.cil',
-    'firmwaresysfile.cil',
-    'fssysfile.cil',
-    'hypervisorsysfile.cil',
-    'kernelsysfile.cil',
-    'modulesysfile.cil',
-    'powersysfile.cil',
+    'apparmormodulesysfile.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('classsysfile')
-subdir('devicessysfile')
-subdir('fssysfile')
-subdir('kernelsysfile')
-subdir('modulesysfile')
