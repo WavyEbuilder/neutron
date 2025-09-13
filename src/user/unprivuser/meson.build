@@ -15,13 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'privuser.cil',
-    'unprivuser.cil',
+    'staffuser.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('privuser')
-subdir('unprivuser')

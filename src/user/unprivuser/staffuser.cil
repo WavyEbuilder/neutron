@@ -1,0 +1,213 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(userprefix staff.id staff.role)
+
+(block staff
+
+  (blockinherit .user.unpriv.template)
+
+  ;; staff.id has access to c512-c1023
+  (userrange id .user.securitylevel)
+
+  (call .sys.role_access (role id))
+
+  (optional staffuser_alsautil
+            (call .alsa.util.role (role)))
+
+  (optional staffuser_bluez
+            (call .bluez.cli.role (role)))
+
+  (optional staffuser_bpftool
+            (call .bpf.tool.role (role)))
+
+  (optional staffuser_chfn
+            (call .chfn.role (role)))
+
+  (optional staffuser_chsh
+            (call .chsh.role (role)))
+
+  (optional staffuser_cracklib
+            (call .cracklib.check.role (role)))
+
+  (optional staffuser_dmesg
+            (call .dmesg.role (role)))
+
+  (optional staffuser_fprintd
+            (call .fprintd.util.role (role)))
+
+  (optional staffuser_gtkupdateiconcache
+            (call .gtk.updateiconcache.role (role)))
+
+  (optional staffuser_hostname
+            (call .hostname.role (role)))
+
+  (optional staffuser_iproute
+            (call .iproute.role (role))
+            (call .iproute.tc.role (role)))
+
+  (optional staffuser_kbd
+            (call .kbd.role (role)))
+
+  (optional staffuser_lastlog
+            (call .lastlog.role (role)))
+
+  (optional staffuser_lastlog2
+            (call .lastlog2.role (role)))
+
+  (optional staffuser_libuuid
+            (call .libuuid.client.role (role))
+            (call .libuuid.server.role (role)))
+
+  (optional staffuser_logger
+            (call .logger.role (role)))
+
+  (optional staffuser_lsbrelease
+            (call .lsbrelease.role (role)))
+
+  (optional staffuser_mount
+            (call .mount.role (role)))
+
+  (optional staffuser_mpg123
+            (call .mpg123.role (role)))
+
+  (optional staffuser_opensshclient
+            (call .openssh.add.role (role))
+            (call .openssh.agent.role (role))
+            (call .openssh.client.role (role))
+            (call .openssh.keygen.role (role))
+            (call .openssh.keysign.role (role)))
+
+  (optional staffuser_opensshsftpserver
+            (call .openssh.sftpserver.role (role)))
+
+  (optional staffuser_pciutils
+            (call .pci.ls.role (role)))
+
+  (optional staffuser_ping
+            (call .ping.role (role)))
+
+  (optional staffuser_plocate
+            (call .plocate.role (role)))
+
+  (optional staffuser_polkit
+            (call .polkit.check.role (role))
+            (call .polkit.ttyagent.role (role)))
+
+  (optional staffuser_qemu
+            (call .qemu.bridgehelper.role (role)))
+
+  (optional staffuser_qemuutils
+            (call .qemu.img.role (role)))
+
+  (optional staffuser_rfkill
+            (call .rfkill.role (role)))
+
+  (optional staffuser_rsync
+            (call .rsync.role (role)))
+
+  (optional staffuser_rtkit
+            (call .rtkit.cli.role (role)))
+
+  (optional staffuser_seutil
+            (call .seutil.getsebool.role (role)))
+
+  (optional staffuser_systemdanalyze
+            (call .systemd.analyze.role (role)))
+
+  (optional staffuser_systemdaskpassword
+            (call .systemd.askpassword.client.role (role)))
+
+  (optional staffuser_systemdbusctl
+            (call .systemd.busctl.role (role)))
+
+  (optional staffuser_systemdcat
+            (call .systemd.cat.role (role)))
+
+  (optional staffuser_systemdcg
+            (call .systemd.cg.role (role)))
+
+  (optional staffuser_systemdcoredumpctl
+            (call .systemd.coredumpctl.role (role)))
+
+  (optional staffuser_systemdcreds
+            (call .systemd.creds.role (role)))
+
+  (optional staffuser_systemdhostnamectl
+            (call .systemd.hostnamectl.role (role)))
+
+  (optional staffuser_systemdinhibit
+            (call .systemd.inhibit.role (role)))
+
+  (optional staffuser_systemd
+            (call .systemd.journalctl.role (role)))
+
+  (optional staffuser_systemd
+            (call .systemd.localectl.role (role)))
+
+  (optional staffuser_systemdloginctl
+            (call .systemd.loginctl.role (role)))
+
+  (optional staffuser_systemdmachinectl
+            (call .systemd.machinectl.role (role)))
+
+  (optional staffuser_systemdmount
+            (call .systemd.mount.role (role)))
+
+  (optional staffuser_systemdnetworkctl
+            (call .systemd.networkctl.role (role)))
+
+  (optional staffuser_systemdoomctl
+            (call .systemd.oomctl.role (role)))
+
+  (optional staffuser_systemdportablectl
+            (call .systemd.portablectl.role (role)))
+
+  (optional staffuser_systemdresolvectl
+            (call .systemd.resolvectl.role (role)))
+
+  (optional staffuser_systemdsshproxy
+            (call .systemd.sshproxy.role (role)))
+
+  (optional staffuser_systemdstdiobridge
+            (call .systemd.stdiobridge.role (role)))
+
+  (optional staffuser_systemdsystemctl
+            (call .systemd.systemctl.role (role)))
+
+  (optional staffuser_systemdtimedatectl
+            (call .systemd.timedatectl.role (role)))
+
+  (optional staffuser_systemdvarlinkctl
+            (call .systemd.varlinkctl.role (role)))
+
+  (optional staffuser_tracepath
+            (call .tracepath.role (role)))
+
+  (optional staffuser_upower
+            (call .upower.role (role)))
+
+  (optional staffuser_usbguard
+            (call .usbguard.client.role (role)))
+
+  (optional staffuser_usbutils
+            (call .usbutils.role (role)))
+
+  (optional staffuser_wpasupplicant
+            (call .wpasupplicant.cli.role (role)))
+
+  (optional staffuser_wtmpdb
+            (call .wtmpdb.role (role))))

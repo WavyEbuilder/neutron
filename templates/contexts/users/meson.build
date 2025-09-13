@@ -14,6 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+staff_id_user = configure_file(
+    input: 'staff.id.in',
+    output: 'staff.id',
+    configuration: templates_conf_data,
+)
+
 sys_id_user = configure_file(
     input: 'sys.id.in',
     output: 'sys.id',
@@ -27,6 +33,7 @@ user_id_user = configure_file(
 )
 
 install_data(
+    staff_id_user,
     sys_id_user,
     user_id_user,
     install_dir: join_paths(
