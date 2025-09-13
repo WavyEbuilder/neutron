@@ -19,6 +19,7 @@ cil_files = [
     'userhugetlbfsfile.cil',
     'usermailspoolfile.cil',
     'usermqueuefsfile.cil',
+    'userrunuserfile.cil',
     'usertmpfile.cil',
     'usertmpfsfile.cil',
 ]
