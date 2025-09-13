@@ -17,6 +17,7 @@
 cil_files = [
     'lostfoundfile.cil',
     'mediafile.cil',
+    'nologinfile.cil',
     'passwdfile.cil',
     'rootfile.cil',
     'shellrcfile.cil',
