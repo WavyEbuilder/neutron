@@ -1,0 +1,50 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(block unixchkpwd
+
+  (blockinherit .hybrid.agent.template)
+
+  (allow subj self (capability (audit_write dac_read_search setuid)))
+  (allow subj self (process (getcap)))
+  (allow subj self create_netlink_audit_socket)
+  (allow subj self create_unix_dgram_socket)
+  (allow subj self (netlink_audit_socket (nlmsg_relay)))
+
+  (call .caplastcap.read_sysctlfile_pattern.type (subj))
+
+  (call .locale.data.map_file_pattern.type (subj))
+  (call .locale.read_file_pattern.type (subj))
+
+  (call .loginserialtermdev.dontaudit_readwriteinherited_all_chr_files (subj))
+
+  (call .nss.passwdgroup.type (subj))
+
+  (call .proc.getattr_fs_pattern.type (subj))
+
+  (call .selinux.linked.type (subj))
+
+  (call .shadow.read_file_files (subj))
+  (call .shadow.read.type (subj))
+
+  (call .user.termdev.dontaudit_readwriteinherited_all_chr_files (subj))
+
+  (optional unixchkpwd_systemdjournal
+            (call .systemd.journal.relay_msgs.type (subj))))
+
+(in after unixchkpwd.exec
+
+    (filecon "/usr/bin/unix_chkpwd" file file_context))
