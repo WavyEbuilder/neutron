@@ -1,0 +1,53 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(block hushlogins
+
+  (block conf
+
+    (filecon "/etc/hushlogins" file file_context)
+    (filecon "/etc/hushlogins\..*" file file_context)
+
+    (macro conf_file_type_transition_file ((type ARG1))
+           (call .conf.file_type_transition
+                 (ARG1 file file "hushlogins")))
+
+    (blockinherit .file.conf.base_template)
+    (blockinherit .file.macro_template_files)
+
+    (block read_file_pattern
+
+      (macro type ((type ARG1))
+             (typeattributeset typeattr ARG1))
+
+      (typeattribute typeattr)
+
+      (call read_file_files (typeattr))
+
+      (call .conf.search_file_pattern.type (typeattr))))
+
+  (block read_file_pattern
+
+    (macro type ((type ARG1))
+           (typeattributeset typeattr ARG1))
+
+    (typeattribute typeattr)
+
+    (call conf.read_file_pattern.type (typeattr))))
+
+(in file.unconfined
+
+    (call .hushlogins.conf.conf_file_type_transition_file (typeattr)))
