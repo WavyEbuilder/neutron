@@ -22,6 +22,7 @@ cil_files = [
     'hostnamekernelsysctlfile.cil',
     'keyskernelsysctlfile.cil',
     'modprobekernelsysctlfile.cil',
+    'ngroupsmaxkernelsysctlfile.cil',
     'nslastpidkernelsysctlfile.cil',
     'osreleasekernelsysctlfile.cil',
     'overflowuidkernelsysctlfile.cil',
