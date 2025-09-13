@@ -29,6 +29,7 @@ cil_files = [
     'selinuxconffile.cil',
     'servicesconffile.cil',
     'skelconffile.cil',
+    'tcpwrappersconffile.cil',
     'terminfoconffile.cil',
 ]
 
