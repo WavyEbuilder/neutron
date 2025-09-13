@@ -23,6 +23,7 @@ cil_files = [
     'localedatafile.cil',
     'mimedatafile.cil',
     'modfile.cil',
+    'servicesdatafile.cil',
     'srcfile.cil',
     'terminfodatafile.cil',
 ]
