@@ -16,6 +16,7 @@
 
 cil_files = [
     'environrunfile.cil',
+    'motdrunfile.cil',
     'runlockfile.cil',
     'runuserfile.cil',
     'utmprunfile.cil',

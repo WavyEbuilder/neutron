@@ -1,0 +1,42 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+(in file.unconfined
+
+    (call .motd.run.run_file_type_transition_file
+          (typeattr dir "motd.d"))
+    (call .motd.run.run_file_type_transition_file
+          (typeattr file "motd.dynamic"))
+    (call .motd.run.run_file_type_transition_file
+          (typeattr file "motd.dynamic.new")))
+
+(in motd
+
+    (block run
+
+      (filecon "/run/motd\.d" dir file_context)
+      (filecon "/run/motd\.d/.*" any file_context)
+
+      (filecon "/run/motd\.dynamic" file file_context)
+      (filecon "/run/motd\.dynamic\..*" file file_context)
+
+      (macro run_file_type_transition_file ((type ARG1)(class ARG2)(name ARG3))
+             (call .run.file_type_transition
+                   (ARG1 file ARG2 ARG3)))
+
+      (blockinherit .file.macro_template_dirs)
+      (blockinherit .file.macro_template_files)
+      (blockinherit .file.run.base_template)))

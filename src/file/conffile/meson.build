@@ -23,6 +23,7 @@ cil_files = [
     'localeconffile.cil',
     'logindefsconffile.cil',
     'mimeconffile.cil',
+    'motdconffile.cil',
     'protocolsconffile.cil',
     'resolvconffile.cil',
     'selinuxconffile.cil',
