@@ -16,6 +16,7 @@
 
 cil_files = [
     'editorstatefile.cil',
+    'selinuxstatefile.cil',
 ]
 
 foreach file : cil_files

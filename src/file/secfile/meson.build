@@ -15,15 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'editorconffile.cil',
-    'hostsconffile.cil',
-    'inputrcconffile.cil',
-    'localeconffile.cil',
-    'logindefsconffile.cil',
-    'mimeconffile.cil',
-    'selinuxconffile.cil',
-    'skelconffile.cil',
-    'terminfoconffile.cil',
+    'selinuxsecfile.cil',
 ]
 
 foreach file : cil_files
