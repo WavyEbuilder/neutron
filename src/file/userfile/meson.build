@@ -17,6 +17,7 @@
 cil_files = [
     'userhomefile.cil',
     'usertmpfile.cil',
+    'usertmpfsfile.cil',
 ]
 
 foreach file : cil_files
