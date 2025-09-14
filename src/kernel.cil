@@ -1,0 +1,112 @@
+;; neutron - Next-generation system SELinux policy
+;; Copyright (C) 2025 Rahul Sandhu <nvraxn@gmail.com>
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License, as published by
+;; the Free Software Foundation, either version 3 of the License, or (at your
+;; option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;; Context for kernel userspace helpers.
+(sidcontext kernel (sys.id sys.role kernel.subj sys.lowlow))
+
+(block kernel
+
+  (roletype .sys.role subj)
+
+  ;; TODO: maybe filter down to .subj.template?
+  (blockinherit .subj.common.base_template)
+
+  ;; subj isn't entered by an exec, and it shouldn't ever execute something on
+  ;; the rootfs without a domain transition.
+  (neverallow subj file.typeattr (file (execute_no_trans)))
+  ;; Files of other users should not be accessed by kernel helpers.
+  (neverallow subj self (capability (dac_override dac_read_search)))
+
+  ;; kdevtmpfs calls vfs_mknod() on creation of new dev nodes.
+  (allow subj self (capability (mknod)))
+  (allow subj self (key (search)))
+  ;; kthreadd create_thread()
+  (allow subj self (process (fork)))
+  (allow subj self (system (module_request)))
+
+  (call .cmdline.read_procfile_pattern.type (subj))
+
+  ;; To get to /usr/lib/firmware - can we get rid of this?
+  (call .data.search_file_dirs (subj))
+
+  (call .debug.search_fs_dirs (subj))
+
+  (call .dev.create_file_blk_files (subj))
+  (call .dev.create_file_chr_files (subj))
+  (call .dev.delete_all_chr_files (subj))
+  (call .dev.delete_file_blk_files (subj))
+  (call .dev.delete_file_chr_files (subj))
+  (call .dev.delete_file_dirs (subj))
+  (call .dev.setattr_all_chr_files (subj))
+  (call .dev.setattr_file_blk_files (subj))
+  (call .dev.setattr_file_chr_files (subj))
+
+  (call .file.firmware.load_all_files (subj))
+
+  (call .firmware.data.read_file_files (subj))
+  (call .firmware.data.read_file_lnk_files (subj))
+  (call .firmware.data.search_file_dirs (subj))
+
+  (call .net.netif.egress_all_netifs (subj))
+  (call .net.netnode.sendto_all_nodes (subj))
+  (call .net.packet.send_all_packets (subj))
+
+  ;; TODO: can we get rid of this for boolean invalid_packets false?
+  (call .send_invalid_packets (subj))
+
+  (call .vmci.create_nodedev_chr_files (subj))
+  (call .vmci.dev_file_type_transition_nodedev (subj))
+
+  (block ptrace
+
+    (macro type ((type ARG1))
+           (typeattributeset typeattr ARG1))
+
+    (typeattribute not_typeattr)
+    (typeattribute typeattr)
+
+    (typeattributeset not_typeattr (not typeattr))
+
+    ;; Nothing should ptrace kernel threads.
+    (neverallow not_typeattr subj (process (ptrace))))
+
+  (block transition
+
+    (macro type ((type ARG1))
+           (typeattributeset typeattr ARG1))
+
+    (typeattribute not_typeattr)
+    (typeattribute typeattr)
+
+    (typeattributeset not_typeattr (not typeattr))
+
+    ;; The initial task starts in subj, but nothing ever transitions into it.
+    (neverallow not_typeattr subj (process (transition dyntransition)))
+    (neverallow not_typeattr subj (process2 (nnp_transition))))
+
+  (block unconfined
+
+    (macro type ((type ARG1))
+           (typeattributeset typeattr ARG1))
+
+    (typeattribute typeattr)
+
+    (call ptrace.type (typeattr))
+    (call transition.type (typeattr))))
+
+(in unconfined
+
+    (call .kernel.unconfined.type (typeattr)))

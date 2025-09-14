@@ -23,6 +23,12 @@
   (macro setattr_all_chr_files ((type ARG1))
          (allow ARG1 typeattr (chr_file (setattr))))
 
+  (macro setattr_file_blk_files ((type ARG1))
+         (allow ARG1 file (blk_file (setattr))))
+
+  (macro setattr_file_chr_files ((type ARG1))
+         (allow ARG1 file (chr_file (setattr))))
+
   (blockinherit .file.all_macro_template_blk_files)
   (blockinherit .file.all_macro_template_chr_files)
 
