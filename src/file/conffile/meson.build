@@ -17,6 +17,7 @@
 cil_files = [
     'editorconffile.cil',
     'environconffile.cil',
+    'fstabconffile.cil',
     'hostsconffile.cil',
     'hushloginsconffile.cil',
     'inputrcconffile.cil',
