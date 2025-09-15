@@ -15,16 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'dbus.cil',
-    'nss.cil',
-    'openssh.cil',
-    'pam.cil',
+    'mount.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('openssh')
-subdir('pam')
-subdir('utillinux')

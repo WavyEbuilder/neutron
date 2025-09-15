@@ -9,6 +9,9 @@
 
 (block sys
 
+  (macro dontaudit_setsched_subj_processes ((type ARG1))
+         (dontaudit ARG1 subj (process (setsched))))
+
   (macro role_access ((role ARG1)(user ARG2))
          (call roleallow.role (ARG1))
          (call userrole.user (ARG2)))
