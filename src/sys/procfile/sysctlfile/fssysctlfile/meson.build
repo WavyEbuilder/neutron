@@ -15,23 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 cil_files = [
-    'abisysctlfile.cil',
-    'cryptosysctlfile.cil',
-    'debugsysctlfile.cil',
-    'devsysctlfile.cil',
-    'fssysctlfile.cil',
-    'kernelsysctlfile.cil',
-    'netsysctlfile.cil',
-    'sunrpcsysctlfile.cil',
-    'usersysctlfile.cil',
-    'vmsysctlfile.cil',
+    'nropenfssysctlfile.cil',
 ]
 
 foreach file : cil_files
     policy_sources += files(file)
 endforeach
-
-subdir('fssysctlfile')
-subdir('kernelsysctlfile')
-subdir('netsysctlfile')
-subdir('vmsysctlfile')
