@@ -1,0 +1,8 @@
+Bugfixes:
+
+* module_request is no longer for sys.subj but kernel.subj since giving kernel
+  threads their own domain. Look at the entire systemav and see what of it (if
+  not all of it) needs to be moved into the kernel namespace. However, it also
+  appears that systemd uses class system permission reboot, so possibly keep
+  that in the sys namespace? (not the systemd namespace as the systemd module
+  is optional).
