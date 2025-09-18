@@ -6,3 +6,7 @@ Bugfixes:
   appears that systemd uses class system permission reboot, so possibly keep
   that in the sys namespace? (not the systemd namespace as the systemd module
   is optional).
+
+Testing/CI:
+
+* Configure and add sechecker workflow.
