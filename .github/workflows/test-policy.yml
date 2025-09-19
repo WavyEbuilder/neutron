@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2025 Rahul Sandhu <nvraxn@gmail.com>
+# SPDX-License-Identifier: MIT
+
+name: Test policy
+
+on: [pull_request, push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: gentoo/stage3:latest
+
+    env:
+      FEATURES: "-network-sandbox -ipc-sandbox -mount-sandbox" # docker
+
+    steps:
+      - name: Checkout neutron sources
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          mkdir -p /etc/portage/package.use
+          cat <<EOF > /etc/portage/package.use/ci
+          sys-libs/libselinux python
+          sys-process/audit python
+          EOF
+          emerge-webrsync -q
+          getuto
+          emerge -qgn app-admin/setools sys-apps/policycoreutils sys-apps/secilc
+
+      - name: Run tests
+        run: ./scripts/run_tests.py
