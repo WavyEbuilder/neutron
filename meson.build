@@ -54,3 +54,5 @@ meson.add_install_script(
         'file_contexts',
     ),
 )
+
+subdir('test')
