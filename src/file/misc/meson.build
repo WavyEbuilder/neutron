@@ -3,6 +3,7 @@
 
 cil_files = [
     'lostfoundfile.cil',
+    'machineidfile.cil',
     'mediafile.cil',
     'nologinfile.cil',
     'passwdfile.cil',
