@@ -84,6 +84,16 @@
     (neverallow not_typeattr subj (process (transition dyntransition)))
     (neverallow not_typeattr subj (process2 (nnp_transition))))
 
+  (block silenced
+
+    (macro type ((type ARG1))
+           (typeattributeset typeattr ARG1))
+
+    (typeattribute typeattr)
+
+    (dontaudit typeattr subj (process (ptrace transition dyntransition)))
+    (dontaudit typeattr subj (process2 (nnp_transition))))
+
   (block unconfined
 
     (macro type ((type ARG1))
@@ -93,6 +103,10 @@
 
     (call ptrace.type (typeattr))
     (call transition.type (typeattr))))
+
+(in silenced
+
+    (call .kernel.silenced.type (typeattr)))
 
 (in unconfined
 
