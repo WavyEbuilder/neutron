@@ -422,9 +422,6 @@
 
 (in sys
 
-    ;; TODO: when we have domains for PID1, remove this.
-    (call .dbus.subj_type_transition (subj))
-
     (block sendmsg_subj_dbus
 
       (macro type ((type ARG1))
