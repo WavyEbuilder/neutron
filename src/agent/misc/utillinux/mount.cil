@@ -75,6 +75,8 @@
 
   (call .fstab.read_file_files (subj))
 
+  (call .kernel.modulerequest_system (subj))
+
   (call .list_invalid_dirs (subj))
 
   (call .locale.data.map_file_pattern.type (subj))
@@ -95,7 +97,6 @@
   (call .stordev.readwrite_all_chr_files (subj))
 
   (call .sys.dontaudit_setsched_subj_processes (subj))
-  (call .sys.modulerequest_system (subj))
 
   (call .sys.tmpfs.appendinherited_file_files (subj))
   (call .sys.tmpfs.auditwriteaccess_file_dirs (subj))
