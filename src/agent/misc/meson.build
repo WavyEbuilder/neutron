@@ -19,4 +19,5 @@ subdir('utillinux')
 
 if systemd
     policy_sources += files('systemd.cil')
+    subdir('systemd')
 endif
