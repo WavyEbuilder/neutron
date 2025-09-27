@@ -1,0 +1,22 @@
+;; SPDX-FileCopyrightText: 2025 Rahul Sandhu <nvraxn@gmail.com>
+;; SPDX-License-Identifier: MIT
+
+(in openssh.keygen
+
+    (block unit
+
+      (filecon "/usr/lib/systemd/system/sshd-keygen\.service.*" file
+               file_context)
+
+      (blockinherit .file.unit.template)))
+
+(in openssh.server
+
+    (block unit
+
+      (filecon "/usr/lib/systemd/system/ssh\.service.*" file file_context)
+      (filecon "/usr/lib/systemd/system/ssh\.socket.*" file file_context)
+      (filecon "/usr/lib/systemd/system/ssh@.*\.service.*" file file_context)
+      (filecon "/usr/lib/systemd/system/sshd@.*\.service.*" file file_context)
+
+      (blockinherit .file.unit.template)))

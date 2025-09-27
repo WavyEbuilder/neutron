@@ -12,6 +12,11 @@ foreach file : cil_files
     policy_sources += files(file)
 endforeach
 
+subdir('dbus')
 subdir('openssh')
 subdir('pam')
 subdir('utillinux')
+
+if systemd
+    policy_sources += files('systemd.cil')
+endif
