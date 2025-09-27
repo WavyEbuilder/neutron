@@ -1,0 +1,4 @@
+Bugfixes:
+
+* systemdjournal: When we have labelling for /run/udev:
+                  (call systemd.udev.run.read_file_pattern.type (subj))
