@@ -4,6 +4,7 @@
 cil_files = [
     'systemdcoredump.cil',
     'systemdjournal.cil',
+    'systemdsysctl.cil',
 ]
 
 foreach file : cil_files
