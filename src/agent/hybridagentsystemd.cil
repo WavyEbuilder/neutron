@@ -1,0 +1,6 @@
+;; SPDX-FileCopyrightText: 2025 Rahul Sandhu <nvraxn@gmail.com>
+;; SPDX-License-Identifier: MIT
+
+(in hybrid.agent.template
+
+    (call subj_type_transition (.systemd.subj)))

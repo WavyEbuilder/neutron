@@ -1,0 +1,30 @@
+;; SPDX-FileCopyrightText: 2025 Rahul Sandhu <nvraxn@gmail.com>
+;; SPDX-License-Identifier: MIT
+
+(block logger
+
+  (blockinherit .hybrid.agent.template)
+
+  (allow subj self (capability (sys_admin)))
+  (allow subj self create_unix_dgram_socket)
+
+  (call .crypto.read_sysctlfile_pattern.type (subj))
+
+  (call .locale.data.map_file_pattern.type (subj))
+  (call .locale.read_file_pattern.type (subj))
+
+  (call .nss.passwdgroup.type (subj))
+
+  (call .selinux.linked.type (subj))
+
+  (call .sys.signull_subj_processes (subj))
+
+  (optional logger_systemd
+            (call .systemd.unit.run.search_dir_pattern.type (subj)))
+
+  (optional logger_systemdjournal
+            (call .systemd.journal.relay_msgs.type (subj))))
+
+(in after logger.exec
+
+    (filecon "/usr/bin/logger" file file_context))

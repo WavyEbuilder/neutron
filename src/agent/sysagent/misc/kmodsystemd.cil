@@ -1,0 +1,12 @@
+;; SPDX-FileCopyrightText: 2025 Rahul Sandhu <nvraxn@gmail.com>
+;; SPDX-License-Identifier: MIT
+
+(in kmod
+
+    (block unit
+
+      (filecon "/usr/lib/systemd/system/kmod-static-nodes\.service.*" file
+               file_context)
+      (filecon "/usr/lib/systemd/system/modprobe@.*\.service.*" file file_context)
+
+      (blockinherit .file.unit.template)))

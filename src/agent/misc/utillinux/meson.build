@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MIT
 
 cil_files = [
+    'hwclock.cil',
+    'logger.cil',
     'mount.cil',
 ]
 
