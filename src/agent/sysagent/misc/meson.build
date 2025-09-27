@@ -3,6 +3,7 @@
 
 cil_files = [
     'ldconfig.cil',
+    'sysctl.cil',
 ]
 
 foreach file : cil_files
